@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Task } from './task.entity';
 
 @Entity()
 export class User {
@@ -8,9 +9,16 @@ export class User {
   @Column()
   displayName!: string;
 
-  @Column()
+  @Column({ unique: true })
   email!: string;
 
   @Column()
   password!: string;
+
+  @Column({ default: 'USER' })
+  role?: string;
+  // change to USER | ADMIN | OWNER to be strongly typed
+
+  @OneToMany(() => Task, (task) => task.owner)
+  tasks!: Task[];
 }

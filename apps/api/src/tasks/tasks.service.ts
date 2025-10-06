@@ -1,35 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTaskDto, Task } from '@task-app/data';
+import {
+  CreateTaskDto,
+  JwtVerificationResponse,
+  Task,
+  User,
+} from '@task-app/data';
 import { UpdateTaskDto } from '@task-app/data';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task) private tasksRepository: Repository<Task>
+    @InjectRepository(Task) private tasksRepository: Repository<Task>,
+    @InjectRepository(User) private usersRepository: Repository<User>
   ) {}
 
-  // create, findAll, findOne, update, remove
+  // create, find, findOne, update, remove
   // then save if want to persist to db
-  create(createTaskDto: CreateTaskDto) {
-    const task = this.tasksRepository.create(createTaskDto);
-    return this.tasksRepository.save(task);
+  async create(
+    createTaskDto: CreateTaskDto,
+    reqObj: { user: JwtVerificationResponse }
+  ) {
+    const { userId } = reqObj.user;
+    console.log('reqObj', reqObj);
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    const task = this.tasksRepository.create({ ...createTaskDto, owner: user });
+    return await this.tasksRepository.save(task);
   }
 
   findAll() {
-    return `This action returns all tasks`;
+    return this.tasksRepository.find();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(
+    id: number,
+    updateTaskDto: UpdateTaskDto,
+    reqObj: { user: JwtVerificationResponse }
+  ) {
+    const { userId } = reqObj.user;
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    return this.tasksRepository.update(id, { ...updateTaskDto, owner: user });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} task`;
+    return this.tasksRepository.delete(id);
   }
 }
