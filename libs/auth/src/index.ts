@@ -6,3 +6,5 @@ export * from './guards/roles.guard';
 export * from './users/users.module';
 export * from './users/users.service';
 export * from './custom-decorators/roles.decorator';
+export * from './custom-decorators/current-user.decorator';
+export * from './guards/orgs.guard';

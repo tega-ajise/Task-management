@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateTaskDto,
   JwtVerificationResponse,
+  Organizations,
   Task,
   User,
 } from '@task-app/data';
 import { UpdateTaskDto } from '@task-app/data';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 
 @Injectable()
 export class TasksService {
@@ -18,36 +19,55 @@ export class TasksService {
 
   // create, find, findOne, update, remove
   // then save if want to persist to db
-  async create(
-    createTaskDto: CreateTaskDto,
-    reqObj: { user: JwtVerificationResponse }
-  ) {
-    const { userId } = reqObj.user;
-    console.log('reqObj', reqObj);
+  async create(createTaskDto: CreateTaskDto, userObj: JwtVerificationResponse) {
+    const { userId } = userObj;
     const user = await this.usersRepository.findOne({ where: { id: userId } });
+    // for now till db lookup is done in the jwt strategy
     const task = this.tasksRepository.create({ ...createTaskDto, owner: user });
     return await this.tasksRepository.save(task);
   }
 
-  findAll() {
-    return this.tasksRepository.find();
+  async findAll(user: { organization: Organizations }) {
+    if (user.organization === Organizations.PARENT) {
+      return this.tasksRepository.find();
+    }
+    return this.tasksRepository.find({
+      where: { owner: { organization: Not(Organizations.PARENT) } },
+      // relations: { owner: true }, // because owner is loaded eagerly, we don't need this
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(id: number) {
+    return this.tasksRepository.findOne({
+      where: { id },
+    });
   }
 
   async update(
     id: number,
     updateTaskDto: UpdateTaskDto,
-    reqObj: { user: JwtVerificationResponse }
+    user: JwtVerificationResponse
   ) {
-    const { userId } = reqObj.user;
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
-    return this.tasksRepository.update(id, { ...updateTaskDto, owner: user });
+    const owner = (await this.tasksRepository.findOne({ where: { id } })).owner;
+    const isOwner = owner.id === user.userId;
+    if (user.role !== 'ADMIN' && !isOwner) {
+      throw new ForbiddenException(
+        'You are not authorized to update this task'
+      );
+    }
+    return this.tasksRepository.update(id, { ...updateTaskDto, owner });
   }
 
-  remove(id: number) {
+  async remove(id: number, user: JwtVerificationResponse) {
+    const owner = await this.tasksRepository
+      .findOne({ where: { id } })
+      .then((t) => t.owner);
+    const isOwner = owner.id === user.userId;
+    if (user.role !== 'ADMIN' && !isOwner) {
+      throw new ForbiddenException(
+        'You are not authorized to delete this task'
+      );
+    }
     return this.tasksRepository.delete(id);
   }
 }

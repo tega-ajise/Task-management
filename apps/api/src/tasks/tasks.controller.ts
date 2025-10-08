@@ -6,7 +6,6 @@ import {
   Param,
   Delete,
   Put,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
@@ -16,25 +15,28 @@ import {
   JwtVerificationResponse,
 } from '@task-app/data';
 import { UpdateTaskDto } from '@task-app/data';
-import { JwtAuthGuard, Roles, RolesGuard } from '@task-app/auth';
+import {
+  CurrentUser,
+  JwtAuthGuard,
+  Roles,
+  RolesGuard,
+  ScopeGuard,
+} from '@task-app/auth';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, ScopeGuard, RolesGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(
-    @Body() createTaskDto: CreateTaskDto,
-    @Req() req: { user: JwtVerificationResponse }
-  ) {
-    return this.tasksService.create(createTaskDto, req);
+  create(@Body() createTaskDto: CreateTaskDto, @CurrentUser() user) {
+    return this.tasksService.create(createTaskDto, user);
   }
 
   @Get()
   @Roles(AppRoles.ADMIN)
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@CurrentUser() user) {
+    return this.tasksService.findAll(user);
   }
 
   // @Get(':id')
@@ -43,18 +45,18 @@ export class TasksController {
   // }
 
   @Put(':id')
-  @Roles(AppRoles.ADMIN, AppRoles.OWNER)
+  @Roles(AppRoles.ADMIN)
   update(
     @Param('id') id: string,
     @Body() updateTaskDto: UpdateTaskDto,
-    @Req() req: { user: JwtVerificationResponse }
+    @CurrentUser() user: JwtVerificationResponse
   ) {
-    return this.tasksService.update(+id, updateTaskDto, req);
+    return this.tasksService.update(+id, updateTaskDto, user);
   }
 
   @Delete(':id')
-  @Roles(AppRoles.ADMIN, AppRoles.OWNER)
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  @Roles(AppRoles.ADMIN)
+  remove(@CurrentUser() user, @Param('id') id: string) {
+    return this.tasksService.remove(+id, user);
   }
 }

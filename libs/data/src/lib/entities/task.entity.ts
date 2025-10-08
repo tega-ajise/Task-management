@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Generated,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -37,5 +36,5 @@ export class Task extends BaseEntity {
     eager: true,
     onDelete: 'CASCADE',
   })
-  owner!: User;
+  readonly owner!: User;
 }

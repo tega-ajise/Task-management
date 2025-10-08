@@ -1,8 +1,19 @@
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateTaskDto {
-  _id?: string;
-  owner?: string | number;
+  @IsString()
+  @IsNotEmpty()
+  title!: string;
+
+  @IsString()
+  @IsNotEmpty()
   todo!: string;
+
+  @IsDate()
+  @IsNotEmpty()
   dueDate!: Date;
+
   createdAt?: Date;
+
   isCompleted?: boolean = false;
 }

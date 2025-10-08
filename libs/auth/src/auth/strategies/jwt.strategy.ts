@@ -25,7 +25,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //(copilot): for example, if user is deleted in db but has a valid token, we can check that here
     //(copilot): and throw an UnauthorizedException
     // the return value gets appended to the request object
-    // so can access it in controllers via req.user or using a custom decorator
-    return { userId: payload.sub, email: payload.username, role: payload.role };
+    // so can access it in controllers via req.user or using a custom decorator (@CurrentUser())
+    return {
+      userId: payload.sub,
+      email: payload.username,
+      role: payload.role,
+      organization: payload.organization,
+    };
   }
 }
