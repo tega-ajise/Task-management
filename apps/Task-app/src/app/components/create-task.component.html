@@ -1,0 +1,70 @@
+<div
+  id="task-container"
+  class="max-w-[450px] mx-auto p-6 border rounded-lg bg-[#fafafa] shadow-md"
+>
+  <h2>Create Task</h2>
+
+  <!-- Each form group is a section -->
+  <form (ngSubmit)="addTask()">
+    <div class="mb-4">
+      <label for="title" class="block font-bold mb-1">Title</label>
+      <input
+        class="w-full p-2 border rounded-sm border-[#ccc]"
+        type="text"
+        id="title"
+        [(ngModel)]="task.title"
+        name="title"
+        required
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="content" class="block font-bold mb-1">Content</label>
+      <textarea
+        class="w-full p-2 border rounded-sm border-[#ccc]"
+        id="content"
+        [(ngModel)]="task.todo"
+        name="content"
+      ></textarea>
+    </div>
+
+    <div class="mb-4">
+      <label for="dueDate" class="block font-bold mb-1">Due Date</label>
+      <input
+        class="w-full p-2 border rounded-sm border-[#ccc]"
+        type="date"
+        id="dueDate"
+        [(ngModel)]="task.dueDate"
+        name="dueDate"
+      />
+    </div>
+
+    <button
+      class="mt-2 px-4 py-2 border-0 rounded-sm bg-blue-600 text-white cursor-pointer hover:bg-blue-900"
+      type="submit"
+    >
+      Add Task
+    </button>
+  </form>
+
+  <!-- <hr />
+
+  <div *ngIf="tasks.length">
+    <h3>Tasks</h3>
+    <ul>
+      <li *ngFor="let t of tasks; let i = index">
+        <strong>{{ t.title }}</strong> — {{ t.owner }}
+        <div>{{ t.content }}</div>
+        <small *ngIf="t.dueDate"
+          >Due: {{ t.dueDate | date : 'mediumDate' }}</small
+        >
+        <button
+          class="mt-2 px-4 py-2 border-0 rounded-sm bg-blue-600 text-white cursor-pointer hover:bg-blue-900"
+          (click)="removeTask(i)"
+        >
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div> -->
+</div>

@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsISO8601, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
@@ -9,9 +9,9 @@ export class CreateTaskDto {
   @IsNotEmpty()
   todo!: string;
 
-  @IsDate()
+  @IsISO8601() // accepts YYYY-MM-DD format whereas @IsDate() does not
   @IsNotEmpty()
-  dueDate!: Date;
+  dueDate!: Date | null;
 
   createdAt?: Date;
 
