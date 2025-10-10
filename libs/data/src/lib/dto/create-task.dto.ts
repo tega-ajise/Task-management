@@ -9,9 +9,10 @@ export class CreateTaskDto {
   @IsNotEmpty()
   todo!: string;
 
+  //https://github.com/typestack/class-validator/issues/407
   @IsISO8601() // accepts YYYY-MM-DD format whereas @IsDate() does not
   @IsNotEmpty()
-  dueDate!: Date | null;
+  dueDate!: Date | undefined;
 
   createdAt?: Date;
 

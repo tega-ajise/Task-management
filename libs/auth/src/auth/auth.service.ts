@@ -19,7 +19,7 @@ export class AuthService {
     const ok = user && (await bcrypt.compare(password, user.password));
 
     if (!ok) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Email or password don't match");
     }
     return this.signUser(user);
   }
@@ -30,7 +30,12 @@ export class AuthService {
   }
 
   private async signUser(user: User) {
-    const payload = { sub: user.id, username: user.email, role: user.role };
+    const payload = {
+      sub: user.id,
+      username: user.email,
+      role: user.role,
+      organization: user.organization,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

@@ -1,81 +1,59 @@
-<div
-  id="task-container"
-  class="max-w-[450px] mx-auto p-6 border rounded-lg bg-[#fafafa] shadow-md"
->
-  <h2>Create Task</h2>
-
-  <!-- Each form group is a section -->
-  <form (ngSubmit)="addTask()">
-    <div class="mb-4">
-      <label for="title" class="block font-bold mb-1">Title</label>
-      <input
-        class="w-full p-2 border rounded-sm border-[#ccc]"
-        type="text"
-        id="title"
-        [(ngModel)]="task.title"
-        name="title"
-        required
-      />
-    </div>
-
-    <div class="mb-4">
-      <label for="content" class="block font-bold mb-1">Content</label>
-      <textarea
-        class="w-full p-2 border rounded-sm border-[#ccc]"
-        id="content"
-        [(ngModel)]="task.todo"
-        name="content"
-      ></textarea>
-    </div>
-
-    <div class="mb-4">
-      <label for="owner" class="block font-bold mb-1">Owner</label>
-      <input
-        class="w-full p-2 border rounded-sm border-[#ccc]"
-        type="text"
-        id="owner"
-        [(ngModel)]="task.owner"
-        name="owner"
-        required
-      />
-    </div>
-
-    <div class="mb-4">
-      <label for="dueDate" class="block font-bold mb-1">Due Date</label>
-      <input
-        class="w-full p-2 border rounded-sm border-[#ccc]"
-        type="date"
-        id="dueDate"
-        name="dueDate"
-      />
-    </div>
-
-    <button
-      class="mt-2 px-4 py-2 border-0 rounded-sm bg-blue-600 text-white cursor-pointer hover:bg-blue-900"
-      type="submit"
+<div class="mx-auto mt-10 w-full max-w-5xl px-4">
+  <div class="mb-4 flex items-center justify-between">
+    <h2 class="text-2xl font-semibold text-gray-900">Your Tasks</h2>
+    <a
+      class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-700"
+      routerLink="/tasks/new"
     >
-      Add Task
-    </button>
-  </form>
+      + Create Task
+    </a>
+  </div>
 
-  <!-- <hr />
+  <div
+    *ngIf="loading"
+    class="rounded-lg border border-gray-200 bg-white p-6 text-gray-600 shadow-sm"
+  >
+    Loading…
+  </div>
+  <div
+    *ngIf="error"
+    class="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700"
+  >
+    {{ error }}
+  </div>
 
-  <div *ngIf="tasks.length">
-    <h3>Tasks</h3>
-    <ul>
-      <li *ngFor="let t of tasks; let i = index">
-        <strong>{{ t.title }}</strong> — {{ t.owner }}
-        <div>{{ t.content }}</div>
-        <small *ngIf="t.dueDate"
-          >Due: {{ t.dueDate | date : 'mediumDate' }}</small
-        >
+  <ul *ngIf="!loading && !error && tasks.length > 0" class="grid gap-3">
+    <li
+      *ngFor="let t of tasks"
+      class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+    >
+      <div class="mb-1 flex items-center justify-between">
+        <strong class="text-lg text-gray-900">{{ t.title }}</strong>
+        <span class="text-sm text-gray-500">
+          Owner: {{ t.owner.displayName }}
+        </span>
+      </div>
+
+      <p class="whitespace-pre-wrap text-gray-700">{{ t.todo }}</p>
+
+      <div class="flex items-center justify-between">
+        <div *ngIf="t.dueDate" class="mt-2 text-sm text-gray-500">
+          Due: {{ t.dueDate | date : 'mediumDate' }}
+        </div>
         <button
-          class="mt-2 px-4 py-2 border-0 rounded-sm bg-blue-600 text-white cursor-pointer hover:bg-blue-900"
-          (click)="removeTask(i)"
+          (click)="onDelete(t)"
+          class="ml-3 rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
         >
-          Remove
+          Delete
         </button>
-      </li>
-    </ul>
-  </div> -->
+      </div>
+    </li>
+  </ul>
+
+  <p
+    *ngIf="!loading && !error && tasks.length === 0"
+    class="rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-600"
+  >
+    No tasks to show.
+  </p>
 </div>

@@ -1,0 +1,147 @@
+<div
+  class="mx-auto mt-16 w-full max-w-md rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-100"
+>
+  <h2 class="mb-6 text-2xl font-semibold text-gray-900">Create account</h2>
+
+  <form
+    #registerForm="ngForm"
+    (ngSubmit)="onSubmit(registerForm)"
+    class="space-y-4"
+  >
+    <!-- Name -->
+    <div>
+      <label for="name" class="mb-1 block text-sm font-medium text-gray-700">
+        Name
+      </label>
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="user.displayName"
+        required
+        #name="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="Jane Doe"
+      />
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="name.invalid && name.touched"
+      >
+        Name is required.
+      </small>
+    </div>
+
+    <!-- Organization -->
+    <div>
+      <label
+        for="organization"
+        class="mb-1 block text-sm font-medium text-gray-700"
+      >
+        Organization
+      </label>
+      <select
+        name="organization"
+        [(ngModel)]="user.organization"
+        required
+        #organization="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        <option value="" disabled selected>Select organization</option>
+        <option value="PARENT">PARENT</option>
+        <option value="CHILD">CHILD</option>
+      </select>
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="organization.invalid && organization.touched"
+      >
+        Organization is required.
+      </small>
+    </div>
+
+    <div>
+      <label for="role" class="block text-sm font-medium text-gray-700 mb-1">
+        Role (OPTIONAL)
+      </label>
+      <select
+        name="role"
+        [(ngModel)]="user.role"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        <option value="" disabled>Select role</option>
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="mb-1 block text-sm font-medium text-gray-700">
+        Email
+      </label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="user.email"
+        required
+        email
+        #email="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="you@example.com"
+      />
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="email.invalid && email.touched"
+      >
+        Enter a valid email.
+      </small>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label
+        for="password"
+        class="mb-1 block text-sm font-medium text-gray-700"
+      >
+        Password
+      </label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="user.password"
+        required
+        minlength="6"
+        #password="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="••••••••"
+      />
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="password.invalid && password.touched"
+      >
+        Min 6 characters.
+      </small>
+    </div>
+
+    <!-- Submit -->
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        [disabled]="
+          (registerForm.invalid && registerForm.controls['role']) || loading
+        "
+        class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {{ loading ? 'Creating…' : 'Register' }}
+      </button>
+    </div>
+  </form>
+
+  <p class="mt-4 text-center text-sm text-gray-600">
+    Already have an account?
+    <a
+      routerLink="/login"
+      class="font-medium text-indigo-600 hover:text-indigo-700"
+    >
+      Sign in
+    </a>
+  </p>
+</div>

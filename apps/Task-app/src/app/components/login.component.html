@@ -1,0 +1,70 @@
+<div
+  class="mx-auto mt-16 w-full max-w-md rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-100"
+>
+  <h2 class="mb-6 text-2xl font-semibold text-gray-900">Sign in</h2>
+
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-4">
+    <div>
+      <label for="email" class="mb-1 block text-sm font-medium text-gray-700"
+        >Email</label
+      >
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="user.email"
+        required
+        email
+        #email="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="you@example.com"
+      />
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="email.invalid && email.touched"
+      >
+        Enter a valid email.
+      </small>
+    </div>
+
+    <div>
+      <label for="email" class="mb-1 block text-sm font-medium text-gray-700"
+        >Password</label
+      >
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="user.password"
+        required
+        minlength="6"
+        #password="ngModel"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="••••••••"
+      />
+      <small
+        class="mt-1 block text-sm text-red-600"
+        *ngIf="password.invalid && password.touched"
+      >
+        Password is required (min 6 chars).
+      </small>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || loading"
+        class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {{ loading ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </div>
+  </form>
+
+  <p class="mt-4 text-center text-sm text-gray-600">
+    No account?
+    <a
+      routerLink="/register"
+      class="font-medium text-indigo-600 hover:text-indigo-700"
+      >Create one</a
+    >
+  </p>
+</div>

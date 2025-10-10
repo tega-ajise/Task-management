@@ -9,16 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import {
-  AppRoles,
-  CreateTaskDto,
-  JwtVerificationResponse,
-} from '@task-app/data';
+import { CreateTaskDto, JwtVerificationResponse } from '@task-app/data';
 import { UpdateTaskDto } from '@task-app/data';
 import {
   CurrentUser,
   JwtAuthGuard,
-  Roles,
   RolesGuard,
   ScopeGuard,
 } from '@task-app/auth';
@@ -34,7 +29,7 @@ export class TasksController {
   }
 
   @Get()
-  @Roles(AppRoles.ADMIN)
+  // @Roles(AppRoles.ADMIN, AppRoles.USER)
   findAll(@CurrentUser() user) {
     return this.tasksService.findAll(user);
   }
@@ -45,7 +40,7 @@ export class TasksController {
   // }
 
   @Put(':id')
-  @Roles(AppRoles.ADMIN)
+  // @Roles(AppRoles.ADMIN)
   update(
     @Param('id') id: string,
     @Body() updateTaskDto: UpdateTaskDto,
@@ -55,7 +50,7 @@ export class TasksController {
   }
 
   @Delete(':id')
-  @Roles(AppRoles.ADMIN)
+  // @Roles(AppRoles.ADMIN)
   remove(@CurrentUser() user, @Param('id') id: string) {
     return this.tasksService.remove(+id, user);
   }
