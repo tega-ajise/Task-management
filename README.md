@@ -1,7 +1,8 @@
 # TaskApp
 
 ## Run tasks
-* .env file should go in the root folder
+* If the application uses ports that are already occupied, you can change them in the .env file
+* Adding .env file to repo is NOT standard procedure😳, just for purpose of this project 
 * Ensure you have PostgreSQL installed on your machine
 
 To run both the Full stack application:
