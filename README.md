@@ -16,7 +16,9 @@ npx nx serve api
 --> Send requests to **localhost:3004**
 
 ## API Endpoints
+
 ### POST /tasks – Create Task
+
 Body:
 {
   "title": "Task Title Here",
@@ -24,6 +26,7 @@ Body:
   "dueDate": "2025-12-12"
 }
 --> 201 OK
+
 Body:
 {
   "title": "Incomplete task"
@@ -34,11 +37,14 @@ Body:
 ### GET /tasks – List accessible tasks scoped to role/org
 Authorization: None
 --> 401 Unauthorized – User hasn't registered or logged in)
+
 Authorization: Bearer ....
 --> 200 OK – Lists all the tasks in the user's org scope
 
 ### PUT /tasks/:id – Edit task (if permitted)
+
 Role: Owner
+
 Body:
 {
   "title": "New Title",
@@ -48,6 +54,7 @@ Body:
 --> 200 OK
 
 Role: 
+
 Body:
 {
   "title": "New Title",
@@ -56,7 +63,8 @@ Body:
 }
 --> 200 OK
 
-[Role is User]
+Role: User
+
 Body:
 {
   "title": "New Title",
