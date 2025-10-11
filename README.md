@@ -84,9 +84,22 @@ Role: Admin
 Role: Owner
 --> 200 OK
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Architecture Overview
+### Apps
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+* api (backend application)
+* Task-app (frontend application)
+
+### Libs
+
+* auth (all the logic for authorization handled here
+  * Guards
+  * Custom decorators
+  * User login
+* data (data structure and declaring elements)
+  * Interfaces
+  * Entities
+  * DTOs
 
 ## Add new projects
 
