@@ -34,10 +34,13 @@ export class TasksController {
     return this.tasksService.findAll(user);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.tasksService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: JwtVerificationResponse
+  ) {
+    return this.tasksService.reqFindOne(+id, user);
+  }
 
   @Put(':id')
   // @Roles(AppRoles.ADMIN)

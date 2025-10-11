@@ -5,7 +5,7 @@
   <h2>Create Task</h2>
 
   <!-- Each form group is a section -->
-  <form (ngSubmit)="addTask()">
+  <form (ngSubmit)="editingId ? updateTask() : addTask()">
     <div class="mb-4">
       <label for="title" class="block font-bold mb-1">Title</label>
       <input
@@ -19,7 +19,7 @@
     </div>
 
     <div class="mb-4">
-      <label for="content" class="block font-bold mb-1">Content</label>
+      <label for="content" class="block font-bold mb-1">To Do</label>
       <textarea
         class="w-full p-2 border rounded-sm border-[#ccc]"
         id="content"
@@ -43,18 +43,18 @@
       class="mt-2 px-4 py-2 border-0 rounded-sm bg-blue-600 text-white cursor-pointer hover:bg-blue-900"
       type="submit"
     >
-      Add Task
+      {{ editingId ? 'Update Task' : 'Add Task' }}
     </button>
   </form>
 
-  <!-- <hr />
+  <hr />
 
-  <div *ngIf="tasks.length">
+  <!-- <div *ngIf="tasks.length">
     <h3>Tasks</h3>
     <ul>
       <li *ngFor="let t of tasks; let i = index">
         <strong>{{ t.title }}</strong> — {{ t.owner }}
-        <div>{{ t.content }}</div>
+        <div>{{ t.todo }}</div>
         <small *ngIf="t.dueDate"
           >Due: {{ t.dueDate | date : 'mediumDate' }}</small
         >

@@ -43,6 +43,12 @@ export class TasksService {
     });
   }
 
+  async reqFindOne(id: number, user: JwtVerificationResponse) {
+    const task = await this.tasksRepository.findOne({ where: { id } });
+    if (user.role === 'ADMIN' || user.userId === task.owner.id) return task;
+    throw new ForbiddenException('You are not authorized to edit this task');
+  }
+
   async update(
     id: number,
     updateTaskDto: UpdateTaskDto,

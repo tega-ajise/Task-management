@@ -15,16 +15,14 @@ import { AuditModule } from './audit/audit.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        // remember to set up a .env file with the following variables or adjust as needed
-        // also ensure your database server is running and accessible with these credentials
         // you can also use a different database like mysql, sqlite, etc by changing the 'type' and relevant connection options
         type: 'postgres',
-        host: configService.get('DB_HOST') ?? 'localhost',
+        host: configService.get('DB_HOST') ?? '',
         // might need to add + to assert it is a number
-        port: configService.get('DB_PORT') ?? 5432,
-        username: configService.get('DB_USERNAME') ?? 'postgres',
-        password: configService.get('DB_PASSWORD') ?? '0',
-        database: configService.get('DB_NAME') ?? 'task-app',
+        port: configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME') ?? '',
+        password: configService.get('DB_PASSWORD') ?? '',
+        database: configService.get('DB_NAME') ?? '',
         entities: [Task, User],
         synchronize: true,
       }),

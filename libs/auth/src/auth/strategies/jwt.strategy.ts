@@ -15,15 +15,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       // pull from .env
       // secretOrKey: jwtConstants.secret,
-      secretOrKey:
-        configService.get<string>('JWT_SECRET') ?? 'defaultSecretKey',
+      secretOrKey: configService.get<string>('JWT_SECRET') ?? '',
     });
   }
 
   async validate(payload: JwtPayload): Promise<JwtVerificationResponse> {
     // can do db lookups here to return more enriching info about user in the req.user property
-    //(copilot): for example, if user is deleted in db but has a valid token, we can check that here
-    //(copilot): and throw an UnauthorizedException
+    // for example, if user is deleted in db but has a valid token, we can check that here and throw an UnauthorizedException
     // the return value gets appended to the request object
     // so can access it in controllers via req.user or using a custom decorator (@CurrentUser())
     return {
