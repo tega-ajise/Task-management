@@ -1,6 +1,7 @@
 # TaskApp
 
 ## Run tasks
+* .env file should go in the root folder
 
 To run both the application:
 
@@ -36,10 +37,10 @@ Body:
 
 ### GET /tasks – List accessible tasks scoped to role/org
 Authorization: None
---> 401 Unauthorized – User hasn't registered or logged in)
+--> 401 Unauthorized (User hasn't registered or logged in)
 
 Authorization: Bearer ....
---> 200 OK – Lists all the tasks in the user's org scope
+--> 200 OK (Lists all the tasks in the user's org scope)
 
 ### PUT /tasks/:id – Edit task (if permitted)
 
