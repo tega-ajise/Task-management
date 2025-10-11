@@ -35,10 +35,12 @@ export class TaskViewComponent implements OnInit {
       });
   }
 
-  async onDelete(t: Task) {
+  async onDelete(t: Task, event: MouseEvent) {
     if (!t?.id) return;
     const ok = confirm(`Delete "${t.title}"?`);
     if (!ok) return;
+    event.stopPropagation();
+    event.preventDefault();
 
     this.api
       .deleteTask(t.id)

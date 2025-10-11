@@ -42,8 +42,8 @@
             Due: {{ t.dueDate | date : 'mediumDate' }}
           </div>
           <button
-            (click)="onDelete(t)"
-            class="ml-3 rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+            (click)="onDelete(t, $event)"
+            class="ml-3 rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 z-20"
           >
             Delete
           </button>

@@ -11,7 +11,7 @@ type RegisterDto = { displayName: string; email: string; password: string };
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://localhost:3004';
   private accessToken: string | null = null;
 
   // ===== AUTH =====
