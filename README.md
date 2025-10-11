@@ -1,30 +1,79 @@
 # TaskApp
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
-
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
-
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-
 ## Run tasks
 
-To run the dev server for your app, use:
+To run both the application:
 
 ```sh
-npx nx serve Task-app
+npx nx run-many --target=serve --all
 ```
+--> Open up the application on **localhost:4200**
 
-To create a production bundle:
-
+To run just the backend:
 ```sh
-npx nx build Task-app
+npx nx serve api
 ```
+--> Send requests to **localhost:3004**
 
-To see all available targets to run for a project, run:
+## API Endpoints
+### POST /tasks – Create Task
+Body:
+{
+  "title": "Task Title Here",
+  "todo": "something here",
+  "dueDate": "2025-12-12"
+}
+--> 201 OK
+Body:
+{
+  "title": "Incomplete task"
+  "todo": "Hello"
+}
+--> 400 Bad Request
 
-```sh
-npx nx show project Task-app
-```
+### GET /tasks – List accessible tasks scoped to role/org
+Authorization: None
+--> 401 Unauthorized – User hasn't registered or logged in)
+Authorization: Bearer ....
+--> 200 OK – Lists all the tasks in the user's org scope
+
+### PUT /tasks/:id – Edit task (if permitted)
+Role: Owner
+Body:
+{
+  "title": "New Title",
+  "todo": "same todo, with a greater amount of details",
+  "dueDate": "2025-10-10"
+}
+--> 200 OK
+
+Role: 
+Body:
+{
+  "title": "New Title",
+  "todo": "same todo, with a greater amount of details",
+  "dueDate": "2025-10-10"
+}
+--> 200 OK
+
+[Role is User]
+Body:
+{
+  "title": "New Title",
+  "todo": "same todo, with a greater amount of details",
+  "dueDate": "2025-10-10"
+}
+--> 403 Forbidden
+
+### DELETE /tasks/:id – Delete task (if permitted)
+Role: User
+--> 403 Forbidden
+
+Role: Admin
+--> 200 OK
+
+Role: Owner
+--> 200 OK
 
 These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
 
