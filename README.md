@@ -2,6 +2,7 @@
 
 ## Run tasks
 * .env file should go in the root folder
+* Ensure you have PostgreSQL installed on your machine
 
 To run both the Full stack application:
 
