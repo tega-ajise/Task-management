@@ -56,16 +56,6 @@ Body:
 }
 --> 200 OK
 
-Role: 
-
-Body:
-{
-  "title": "New Title",
-  "todo": "same todo, with a greater amount of details",
-  "dueDate": "2025-10-10"
-}
---> 200 OK
-
 Role: User
 
 Body:
@@ -94,7 +84,7 @@ Role: Owner
 
 ### Libs
 
-* auth (all the logic for authorization handled here
+* auth (all the logic for authorization handled here)
   * Guards
   * Custom decorators
   * User login
